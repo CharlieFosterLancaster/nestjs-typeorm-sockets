@@ -1,12 +1,20 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppGateway } from './app.gateway';
 import { SampleModule } from './sample/sample.module';
+import { SampleService } from './sample/sample.service';
+import { SampleRepository } from './sample/sample.repository';
+import { SampleMapper } from './sample/sample.mapper';
+import { SampleEntity } from './sample/sample.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      expandVariables: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -20,6 +28,6 @@ import { SampleModule } from './sample/sample.module';
     SampleModule
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway],
+  providers: [AppService, AppGateway, SampleService,],
 })
 export class AppModule { }
